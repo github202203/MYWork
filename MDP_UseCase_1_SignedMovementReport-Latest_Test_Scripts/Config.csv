@@ -1,0 +1,3 @@
+﻿Environment,StagePath,DeltaPath,DataSource
+Dev,https://dldpdev01.blob.core.windows.net/bronze/underwriting/Internal/Eclipse/Staging/,https://dldpdev01.blob.core.windows.net/bronze/underwriting/Internal/Eclipse/DeltaLake/,qadata_dldpdev01_dfs_core_windows_net
+Tst,https://dldptst01.blob.core.windows.net/bronze/underwriting/Internal/Eclipse/Staging/,https://dldptst01.blob.core.windows.net/bronze/underwriting/Internal/Eclipse/DeltaLake/,qadata_dldptst01_dfs_core_windows_net
