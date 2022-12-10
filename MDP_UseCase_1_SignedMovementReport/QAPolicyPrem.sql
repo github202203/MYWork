@@ -1,0 +1,35 @@
+
+With 
+ CTE_Bronze_Stage as (
+     SELECT [LastUpd] as [LastUpdSTAGE],[PolicyPremId] as [PolicyPremIdSTAGE],[PolicyId] as [PolicyIdSTAGE],[PremCcyISO] as [PremCcyISOSTAGE],[PremCcyROE] as [PremCcyROESTAGE],[RateType] as [RateTypeSTAGE],[Rate] as [RateSTAGE],[PremRateAmt] as [PremRateAmtSTAGE],[PremRateAmtType] as [PremRateAmtTypeSTAGE],[MinPrem] as [MinPremSTAGE],[AddPrem] as [AddPremSTAGE],[PolicyPremIncome] as [PolicyPremIncomeSTAGE],[BrokerEstPremIncome] as [BrokerEstPremIncomeSTAGE],[CoverPremLimit] as [CoverPremLimitSTAGE],[Narr] as [NarrSTAGE],[DepPrem] as [DepPremSTAGE],[SysLastUpd] as [SysLastUpdSTAGE],[InsDate] as [InsDateSTAGE],[DelDate] as [DelDateSTAGE],[PremSettCcyRoe] as [PremSettCcyRoeSTAGE],[PremSettCcyISO] as [PremSettCcyISOSTAGE],[ROL] as [ROLSTAGE],[UpdBy] as [UpdBySTAGE],[StaffUnits] as [StaffUnitsSTAGE],[StaffRate] as [StaffRateSTAGE],[OtherIncomeAmt] as [OtherIncomeAmtSTAGE],[PremAdjustedInd] as [PremAdjustedIndSTAGE],[PremAdjustableInd] as [PremAdjustableIndSTAGE],[PremSlipRate] as [PremSlipRateSTAGE],[PremEPI] as [PremEPISTAGE],[PremPctSplit] as [PremPctSplitSTAGE],[PremLimit] as [PremLimitSTAGE],[PolicyPremIncomeBud] as [PolicyPremIncomeBudSTAGE],[PolicyPremIncomeRev] as [PolicyPremIncomeRevSTAGE],[PremRateAmtBud] as [PremRateAmtBudSTAGE],[PremRateAmtRev] as [PremRateAmtRevSTAGE],[TruePrice] as [TruePriceSTAGE],[ModelPrice] as [ModelPriceSTAGE],[Basis] as [BasisSTAGE],[ExpectedTotal] as [ExpectedTotalSTAGE],[EstimatedAdj] as [EstimatedAdjSTAGE],[AdjFromDate] as [AdjFromDateSTAGE],[AdjToDate] as [AdjToDateSTAGE],[InsBy] as [InsBySTAGE],[InitialExpectedTotal] as [InitialExpectedTotalSTAGE],[RevExpectedTotal] as [RevExpectedTotalSTAGE],[FinalExpectedTotal] as [FinalExpectedTotalSTAGE],[IncomeLimit] as [IncomeLimitSTAGE]
+           ,HASHBYTES('SHA1',CONVERT(NVARCHAR(MAX),CONCAT([LastUpd],'%',[PolicyPremId],'%',[PolicyId],'%',[PremCcyISO],'%',[PremCcyROE],'%',[RateType],'%',[Rate],'%',[PremRateAmt],'%',[PremRateAmtType],'%',[MinPrem],'%',[AddPrem],'%',[PolicyPremIncome],'%',[BrokerEstPremIncome],'%',[CoverPremLimit],'%',[Narr],'%',[DepPrem],'%',[SysLastUpd],'%',[InsDate],'%',[DelDate],'%',[PremSettCcyRoe],'%',[PremSettCcyISO],'%',[ROL],'%',[UpdBy],'%',[StaffUnits],'%',[StaffRate],'%',[OtherIncomeAmt],'%',[PremAdjustedInd],'%',[PremAdjustableInd],'%',[PremSlipRate],'%',[PremEPI],'%',[PremPctSplit],'%',[PremLimit],'%',[PolicyPremIncomeBud],'%',[PolicyPremIncomeRev],'%',[PremRateAmtBud],'%',[PremRateAmtRev],'%',[TruePrice],'%',[ModelPrice],'%',[Basis],'%',[ExpectedTotal],'%',[EstimatedAdj],'%',[AdjFromDate],'%',[AdjToDate],'%',[InsBy],'%',[InitialExpectedTotal],'%',[RevExpectedTotal],'%',[FinalExpectedTotal],'%',[IncomeLimit])))as Bronze_Stage_HashBytes
+       FROM OPENROWSET ( 
+             BULK 'https://dldpdev01.blob.core.windows.net/bronze/underwriting/Internal/Eclipse/Staging/dbo_PolicyPrem/SystemLoadID=1022022101001/**',
+             FORMAT = 'parquet'
+                          ) as RS
+)
+
+,CTE_Bronze_Delta as (
+     SELECT [LastUpd] as [LastUpdDELTA],[PolicyPremId] as [PolicyPremIdDELTA],[PolicyId] as [PolicyIdDELTA],[PremCcyISO] as [PremCcyISODELTA],[PremCcyROE] as [PremCcyROEDELTA],[RateType] as [RateTypeDELTA],[Rate] as [RateDELTA],[PremRateAmt] as [PremRateAmtDELTA],[PremRateAmtType] as [PremRateAmtTypeDELTA],[MinPrem] as [MinPremDELTA],[AddPrem] as [AddPremDELTA],[PolicyPremIncome] as [PolicyPremIncomeDELTA],[BrokerEstPremIncome] as [BrokerEstPremIncomeDELTA],[CoverPremLimit] as [CoverPremLimitDELTA],[Narr] as [NarrDELTA],[DepPrem] as [DepPremDELTA],[SysLastUpd] as [SysLastUpdDELTA],[InsDate] as [InsDateDELTA],[DelDate] as [DelDateDELTA],[PremSettCcyRoe] as [PremSettCcyRoeDELTA],[PremSettCcyISO] as [PremSettCcyISODELTA],[ROL] as [ROLDELTA],[UpdBy] as [UpdByDELTA],[StaffUnits] as [StaffUnitsDELTA],[StaffRate] as [StaffRateDELTA],[OtherIncomeAmt] as [OtherIncomeAmtDELTA],[PremAdjustedInd] as [PremAdjustedIndDELTA],[PremAdjustableInd] as [PremAdjustableIndDELTA],[PremSlipRate] as [PremSlipRateDELTA],[PremEPI] as [PremEPIDELTA],[PremPctSplit] as [PremPctSplitDELTA],[PremLimit] as [PremLimitDELTA],[PolicyPremIncomeBud] as [PolicyPremIncomeBudDELTA],[PolicyPremIncomeRev] as [PolicyPremIncomeRevDELTA],[PremRateAmtBud] as [PremRateAmtBudDELTA],[PremRateAmtRev] as [PremRateAmtRevDELTA],[TruePrice] as [TruePriceDELTA],[ModelPrice] as [ModelPriceDELTA],[Basis] as [BasisDELTA],[ExpectedTotal] as [ExpectedTotalDELTA],[EstimatedAdj] as [EstimatedAdjDELTA],[AdjFromDate] as [AdjFromDateDELTA],[AdjToDate] as [AdjToDateDELTA],[InsBy] as [InsByDELTA],[InitialExpectedTotal] as [InitialExpectedTotalDELTA],[RevExpectedTotal] as [RevExpectedTotalDELTA],[FinalExpectedTotal] as [FinalExpectedTotalDELTA],[IncomeLimit] as [IncomeLimitDELTA]
+           ,HASHBYTES('SHA1',CONVERT(NVARCHAR(MAX),CONCAT([LastUpd],'%',[PolicyPremId],'%',[PolicyId],'%',[PremCcyISO]COLLATE Latin1_General_100_BIN2_UTF8,'%',[PremCcyROE],'%',[RateType]COLLATE Latin1_General_100_BIN2_UTF8,'%',[Rate],'%',[PremRateAmt],'%',[PremRateAmtType]COLLATE Latin1_General_100_BIN2_UTF8,'%',[MinPrem],'%',[AddPrem],'%',[PolicyPremIncome],'%',[BrokerEstPremIncome],'%',[CoverPremLimit],'%',[Narr]COLLATE Latin1_General_100_BIN2_UTF8,'%',[DepPrem],'%',[SysLastUpd],'%',[InsDate],'%',[DelDate],'%',[PremSettCcyRoe],'%',[PremSettCcyISO]COLLATE Latin1_General_100_BIN2_UTF8,'%',[ROL],'%',[UpdBy]COLLATE Latin1_General_100_BIN2_UTF8,'%',[StaffUnits],'%',[StaffRate],'%',[OtherIncomeAmt],'%',[PremAdjustedInd]COLLATE Latin1_General_100_BIN2_UTF8,'%',[PremAdjustableInd]COLLATE Latin1_General_100_BIN2_UTF8,'%',[PremSlipRate],'%',[PremEPI],'%',[PremPctSplit],'%',[PremLimit],'%',[PolicyPremIncomeBud],'%',[PolicyPremIncomeRev],'%',[PremRateAmtBud],'%',[PremRateAmtRev],'%',[TruePrice],'%',[ModelPrice],'%',[Basis]COLLATE Latin1_General_100_BIN2_UTF8,'%',[ExpectedTotal],'%',[EstimatedAdj],'%',[AdjFromDate],'%',[AdjToDate],'%',[InsBy] COLLATE Latin1_General_100_BIN2_UTF8,'%',[InitialExpectedTotal],'%',[RevExpectedTotal],'%',[FinalExpectedTotal],'%',[IncomeLimit])))as Bronze_Delta_HashBytes
+       FROM [QAData].[dbo].QAPolicyPrem
+)
+ SELECT 'syn-dp-dev-01-ondemand' as SynapseServerName  
+           ,     'Eclipse' as SystemName 
+           ,     'dbo.PolicyPrem' as SynapseViewName 
+           ,     '1022022101001' as SystemLoadId 
+           ,     'Replicated copy of Eclipse with SQL Change Tracking' as SystemDescription 
+           ,     '5328' as ObjectRunId 
+           ,     'PolicyPrem_1022022101001_20220326070353.parquet' as TRFileName 
+           ,STAGE.*,DELTA.* 
+           ,Case WHEN Bronze_Stage_HashBytes = Bronze_Delta_HashBytes 
+                 THEN 'Passed'
+                 ELSE 'Failed'
+             End as TestResult
+           ,GetDate() as TestedOn 
+       FROM  CTE_Bronze_Stage STAGE
+       left join  CTE_Bronze_Delta DELTA
+              on PolicyPremIdSTAGE = PolicyPremIdDELTA
+
+
+			  
